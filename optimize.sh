@@ -64,9 +64,9 @@ function ask() {
     case $answer in
      [yY]* ) eval "$2"
              break;;
-     [nN]* ) echo -e '\e[90mskipping\e[0m'
+     [nN]* ) echo -e '\e[90mskip\e[0m'
              break;;
-     [qQ]* ) echo -e '\e[31mquitting\e[0m'
+     [qQ]* ) echo -e '\e[31mquit\e[0m'
              exit;;
      * ) echo 'Enter y or n.';;
     esac

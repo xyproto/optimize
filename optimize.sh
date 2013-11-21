@@ -3,14 +3,9 @@
 # Set the swappiness to 1 so that the swap disk is only used
 # when out of memory or rarely in the background.
 function set_swappiness() {
-  filename=/etc/sysctl.d/99-sysctl.conf
-  [[ -f $filename ]] || touch "$filename"
-  grep -q 'vm.swappiness' "$filename" \
-    && setconf "$filename" vm.swappiness=1 \
-    || echo 'vm.swappiness=1' >> "$filename"
-  grep -q 'vm.vfs_cache_pressure' "$filename" \
-    && setconf "$filename" vm.vfs_cache_pressure=50 \
-    || echo 'vm.vfs_cache_pressure=50' >> "$filename"
+  fn=/etc/sysctl.d/99-sysctl.conf
+  setconf -a "$fn" vm.swappiness=1
+  setconf -a "$fn" vm.vfs_cache_pressure=50
 }
 
 # First argument is the yes/no question.

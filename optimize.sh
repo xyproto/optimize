@@ -68,7 +68,7 @@ function ask() {
 # Abort if not root
 function root() {
   if [[ $UID != 0 ]]; then
-    echo -e '\e[31m;Run with sudo or as root.\e[0m;'
+    echo -e '\e[31mRun with sudo or as root.\e[0m'
     exit 1
   fi
 }

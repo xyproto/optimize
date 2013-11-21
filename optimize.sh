@@ -4,11 +4,13 @@
 # when out of memory or rarely in the background.
 function set_swappiness() {
   filename=/etc/sysctl.d/99-sysctl.conf
-  if [[ ! -f $filename ]]; then
-    touch "$filename"
-  fi
-  setconf -a "$filename" vm.swappiness 1
-  setconf -a "$filename" vm.vfs_cache_pressure 50
+  [[ -f $filename ]] || touch "$filename"
+  grep 'vm.swappiness' "$filename" \
+    && setconf "$filename" vm.swappiness=1 \
+    || echo 'vm.swappiness=1' >> "$filename"
+  grep 'vm.vfs_cache_pressure' "$filename" \
+    && setconf "$filename" vm.vfs_cache_pressure=50 \
+    || echo 'vm.vfs_cache_pressure=50' >> "$filename"
 }
 
 # First argument is the yes/no question.

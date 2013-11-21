@@ -40,34 +40,54 @@ function rank_mirrors() {
     && cp -f /tmp/new.mirrorlist "$ml"
 }
 
+function update_pacman() {
+  LC_ALL=C pacman -Sy
+}
+
 # First argument is the yes/no question.
 # Second argument is the name of the function to call if "yes".
 function ask() {
   while true; do
-    read -p "$1 [ynq]" answer
+    echo -en "· \e[97m$1\e[0m "
+    echo -en '\e[90m[\e[32my\e[93mn\e[31mq\e[90m]\e[36m'
+    read answer
+    echo -en '\e[0m'
     case $answer in
      [yY]* ) eval "$2"
              break;;
-     [nN]* ) echo 'Ok, skipping.'
+     [nN]* ) echo -e '\e[90mSkipping.\e[0m'
              break;;
-     [qQ]* ) echo 'Quitting.'
+     [qQ]* ) echo -e '\e[31mQuitting.\e[0m'
              exit;;
      * ) echo 'Enter y or n.';;
     esac
   done
+  echo
 }
 
 # Abort if not root
 function root() {
   if [[ $UID != 0 ]]; then
-    echo 'Run with sudo or as root'
+    echo -e '\e[31m;Run with sudo or as root.\e[0m;'
     exit 1
   fi
+}
+
+function version_info() {
+  version_string='\e[34mOptimize \e[94mv0.1'
+  echo
+  echo -e "\e[90m..--==[ $version_string \e[90m]==--..\e[0m"
+  echo
+}
+
+function final_message() {
+  echo -e '\e[90m[···/ \e[93mSystem Optimized \e[90m\\···]\e[0m\n'
 }
 
 # Perform various tweaks
 function main() {
   root
+  version_info
 
   # Depends on systemd
   ask 'Set swappiness to 1?' set_swappiness
@@ -77,9 +97,10 @@ function main() {
   if [[ -f /etc/pacman.conf ]]; then
     ask 'Optimize the pacman db?' optimize_pacman
     ask 'Rank pacman mirrors? (takes forever)' rank_mirrors
+    ask 'Update pacman now?' update_pacman
   fi
 
-  echo 'Optimized!'
+  final_message
 }
 
 main

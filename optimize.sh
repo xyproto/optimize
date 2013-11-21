@@ -44,6 +44,15 @@ function update_pacman() {
   LC_ALL=C pacman -Sy
 }
 
+function upgrade_packages() {
+  LC_ALL=C pacman -Syu
+}
+
+function less_eager_updatemandb() {
+  [[ -f /etc/cron.daily/man-db ]] || return
+  setconf /etc/cron.daily/man-db IONICE_CLASS=3
+}
+
 # First argument is the yes/no question.
 # Second argument is the name of the function to call if "yes".
 function ask() {
@@ -93,11 +102,13 @@ function main() {
   ask 'Set swappiness to 1?' set_swappiness
   ask 'Set dirty_ratio to 3?' set_dirty_ratio
 
-  # Depends on pacman
+  # Depends on pacman / Arch Linux
   if [[ -f /etc/pacman.conf ]]; then
     ask 'Optimize the pacman db?' optimize_pacman
     ask 'Rank pacman mirrors? (takes forever)' rank_mirrors
     ask 'Update pacman now?' update_pacman
+    ask 'Upgrade packages now?' upgrade_packages
+    ask 'Less eager updatemandb?' less_eager_updatemandb
   fi
 
   final_message

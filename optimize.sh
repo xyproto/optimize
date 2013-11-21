@@ -17,22 +17,24 @@ function set_dirty_ratio() {
 
 # Optimize the pacman database and rank the mirrors, if pacman is installed
 function optimize_pacman() {
-  [[ -f /etc/pacman.conf ]] || return
-  LC_ALL=C pacman-optimize
+  [[ -f /etc/pacman.conf ]] && LC_ALL=C pacman-optimize
 }
 
 # Rank the various package mirrors by speed
 function rank_mirrors() {
   ml=/etc/pacman.d/mirrorlist
   [[ -f $ml ]] || return
+
+  # Copy a suitable mirrorlist file to /tmp, to be used as a basis
   if [[ -f $ml.pacnew ]]; then
     cp -f "$ml.pacnew" /tmp/mirrorlist
   elif [[ -f $ml ]]; then
-    cp -f "$ml.pacnew" /tmp/mirrorlist
+    cp -f "$ml" /tmp/mirrorlist
   fi
-  if [[ -f /tmp/mirrorlist ]]; then
-    sed -i 's/#Server/Server/g' /tmp/mirrorlist
-  fi
+  [[ -f /tmp/mirrorlist ]] || return
+
+  # Generate a new mirrorlist based on the entries in /tmp/mirrorlist
+  sed -i 's/#Server/Server/g' /tmp/mirrorlist
   cp -i "$ml" "$ml.backup"
   rankmirrors /tmp/mirrorlist | tee /tmp/new.mirrorlist \
     && cp -f /tmp/new.mirrorlist "$ml"

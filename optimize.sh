@@ -5,10 +5,10 @@
 function set_swappiness() {
   filename=/etc/sysctl.d/99-sysctl.conf
   [[ -f $filename ]] || touch "$filename"
-  grep 'vm.swappiness' "$filename" \
+  grep -q 'vm.swappiness' "$filename" \
     && setconf "$filename" vm.swappiness=1 \
     || echo 'vm.swappiness=1' >> "$filename"
-  grep 'vm.vfs_cache_pressure' "$filename" \
+  grep -q 'vm.vfs_cache_pressure' "$filename" \
     && setconf "$filename" vm.vfs_cache_pressure=50 \
     || echo 'vm.vfs_cache_pressure=50' >> "$filename"
 }

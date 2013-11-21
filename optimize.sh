@@ -15,15 +15,40 @@ function set_dirty_ratio() {
   setconf -a "$fn" vm.dirty_background_ratio=2
 }
 
+# Optimize the pacman database and rank the mirrors, if pacman is installed
+function optimize_pacman() {
+  [[ -f /etc/pacman.conf ]] || return
+  LC_ALL=C pacman-optimize
+}
+
+# Rank the various package mirrors by speed
+function rank_mirrors() {
+  ml=/etc/pacman.d/mirrorlist
+  [[ -f $ml ]] || return
+  if [[ -f $ml.pacnew ]]; then
+    cp -f "$ml.pacnew" /tmp/mirrorlist
+  elif [[ -f $ml ]]; then
+    cp -f "$ml.pacnew" /tmp/mirrorlist
+  fi
+  if [[ -f /tmp/mirrorlist ]]; then
+    sed -i 's/#Server/Server/g' /tmp/mirrorlist
+  fi
+  cp -i "$ml" "$ml.backup"
+  rankmirrors /tmp/mirrorlist | tee /tmp/new.mirrorlist \
+    && cp -f /tmp/new.mirrorlist "$ml"
+}
+
 # First argument is the yes/no question.
 # Second argument is the name of the function to call if "yes".
 function ask() {
   while true; do
-    read -p "$1 [Yn]" answer
+    read -p "$1 [ynq]" answer
     case $answer in
      [yY]* ) eval "$2"
              break;;
-     [nN]* ) echo 'Ok, doing nothing.'
+     [nN]* ) echo 'Ok, skipping.'
+             break;;
+     [qQ]* ) echo 'Quitting.'
              exit;;
      * ) echo 'Enter y or n.';;
     esac
@@ -41,8 +66,17 @@ function root() {
 # Perform various tweaks
 function main() {
   root
+
+  # Depends on systemd
   ask 'Set swappiness to 1?' set_swappiness
   ask 'Set dirty_ratio to 3?' set_dirty_ratio
+
+  # Depends on pacman
+  if [[ -f /etc/pacman.conf ]]; then
+    ask 'Optimize the pacman db?' optimize_pacman
+    ask 'Rank pacman mirrors? (takes forever)' rank_mirrors
+  fi
+
   echo 'Optimized!'
 }
 

@@ -29,6 +29,6 @@ For other systems:
 ```bash
 curl -o- http://setconf.roboticoverlords.org/setconf-0.6.2.tar.xz | tar JxC /tmp
 sudo install -Dm755 /tmp/setconf-0.6.2/setconf.py /usr/bin/setconf
-sudo install -Dm755 /tmp/setconf-0.6.2/setconf.1 /usr/share/man/man1/setconf.1
+sudo install -Dm644 /tmp/setconf-0.6.2/setconf.1 /usr/share/man/man1/setconf.1
 sudo gzip /usr/share/man/man1/setconf.1
 ```

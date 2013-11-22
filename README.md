@@ -9,13 +9,8 @@ Pull requests for additional tweaks are welcome!
 Requirements
 ------------
 
+* **bash**
 * **<a href="http://setconf.roboticoverlords.org">setconf</a>**, for the configuration-related tweaks
-
-
-Optional requirements
----------------------
-
-* Arch Linux / **pacman**, for the pacman-related tweaks
 
 
 Quick installation of setconf

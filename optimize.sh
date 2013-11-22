@@ -21,7 +21,8 @@ function set_dirty_ratio() {
 
 # Optimize the pacman database and rank the mirrors, if pacman is installed
 function optimize_pacman() {
-  [[ -f /etc/pacman.conf ]] && LC_ALL=C pacman-optimize
+  echo
+  LC_ALL=C pacman-optimize
 }
 
 # Rank the various package mirrors by speed
@@ -45,10 +46,12 @@ function rank_mirrors() {
 }
 
 function update_pacman() {
+  echo
   LC_ALL=C pacman -Sy
 }
 
 function upgrade_packages() {
+  echo
   LC_ALL=C pacman -Syu
 }
 

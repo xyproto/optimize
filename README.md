@@ -13,24 +13,24 @@ Requirements
 * **pacman**, for the pacman-related tweaks
 
 
-Quick installation of setconf, if you don't have it on your system
--------------------------------------------------------------------
+Quick installation of setconf
+-----------------------------
 
-* For Arch Linux:
+For Arch Linux:
 
 ```bash
 pacman -S setconf
 ```
 
-* For other systems:
+For other systems:
 
-** Download and extract the files to a temporary directory:
+* Download and extract the files to a temporary directory:
 
 ```bash
 curl -o- http://setconf.roboticoverlords.org/setconf-0.6.2.tar.xz | tar JxC /tmp
 ```
 
-** Install setconf (become root first and don't use "sudo", if you prefer):
+* Install setconf (become root first and don't use "sudo", if you prefer):
 
 ```bash
 sudo install -Dm755 /tmp/setconf-0.6.2/setconf.py /usr/bin/setconf

@@ -30,7 +30,7 @@ For other systems:
 curl -o- http://setconf.roboticoverlords.org/setconf-0.6.2.tar.xz | tar JxC /tmp
 ```
 
-* Install setconf (become root first and don't use "sudo", if you prefer):
+* Install setconf (become root first if you prefer not to use sudo):
 
 ```bash
 sudo install -Dm755 /tmp/setconf-0.6.2/setconf.py /usr/bin/setconf

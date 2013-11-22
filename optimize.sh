@@ -6,6 +6,8 @@ function set_swappiness() {
   fn=/etc/sysctl.d/99-sysctl.conf
   setconf -a "$fn" vm.swappiness=1
   setconf -a "$fn" vm.vfs_cache_pressure=50
+  # Activate the changes
+  sysctl -p "$fn"
 }
 
 # Set the dirty_ratio to a more sensible value
@@ -13,6 +15,8 @@ function set_dirty_ratio() {
   fn=/etc/sysctl.d/99-sysctl.conf
   setconf -a "$fn" vm.dirty_ratio=3
   setconf -a "$fn" vm.dirty_background_ratio=2
+  # Activate the changes
+  sysctl -p "$fn"
 }
 
 # Optimize the pacman database and rank the mirrors, if pacman is installed

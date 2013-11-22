@@ -13,12 +13,10 @@ Requirements
 * **<a href="http://setconf.roboticoverlords.org">setconf</a>**, for the configuration-related tweaks
 
 
-Quick installation of setconf
------------------------------
+Quick manual installation of setconf
+------------------------------------
 
-For other systems:
-
-* Download and extract the files to a temporary directory and install the executable and man page. (Run the installation commands as root if you prefer not to use sudo):
+Download and extract the files to a temporary directory and install the executable and man page. (Run the installation commands as root if you prefer not to use sudo):
 
 ```bash
 curl -o- http://setconf.roboticoverlords.org/setconf-0.6.2.tar.xz | tar JxC /tmp

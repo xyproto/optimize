@@ -1,9 +1,18 @@
 #!/bin/bash
 
+TRUE=0
+FALSE=1
+optimized=$FALSE
+
 # Set the swappiness to 1 so that the swap disk is only used
 # when out of memory or rarely in the background.
 function set_swappiness() {
   fn=/etc/sysctl.d/99-sysctl.conf
+  if [[ ! -f $fn ]] && [[ -f /etc/sysctl.conf ]]; then
+    fn=/etc/sysctl.conf
+  else
+    return
+  fi
   setconf -a "$fn" vm.swappiness=1
   setconf -a "$fn" vm.vfs_cache_pressure=50
   # Activate the changes
@@ -13,6 +22,11 @@ function set_swappiness() {
 # Set the dirty_ratio to a more sensible value
 function set_dirty_ratio() {
   fn=/etc/sysctl.d/99-sysctl.conf
+  if [[ ! -f $fn ]] && [[ -f /etc/sysctl.conf ]]; then
+    fn=/etc/sysctl.conf
+  else
+    return
+  fi
   setconf -a "$fn" vm.dirty_ratio=3
   setconf -a "$fn" vm.dirty_background_ratio=2
   # Activate the changes
@@ -70,6 +84,7 @@ function ask() {
     echo -en '\e[0m'
     case $answer in
      [yY]* ) eval "$2"
+             optimized=$TRUE
              break;;
      [nN]* ) echo -e '\e[90mskip\e[0m'
              break;;
@@ -97,7 +112,7 @@ function version_info() {
 }
 
 function final_message() {
-  echo -e '\e[90m[···/ \e[93mSystem Optimized \e[90m\\···]\e[0m\n'
+  echo -e '\e[90m/···/ \e[93mSystem Optimized \e[90m/···/\e[0m\n'
 }
 
 # Perform various tweaks
@@ -106,8 +121,10 @@ function main() {
   version_info
 
   # Depends on systemd
-  ask 'Set swappiness to 1?' set_swappiness
-  ask 'Set dirty_ratio to 3?' set_dirty_ratio
+  if [[ -d /etc/sysctl.d ]] || [[ -f /etc/sysctl.conf ]]; then
+    ask 'Set swappiness to 1?' set_swappiness
+    ask 'Set dirty_ratio to 3?' set_dirty_ratio
+  fi
 
   # Depends on pacman / Arch Linux
   if [[ -f /etc/pacman.conf ]]; then
@@ -118,7 +135,9 @@ function main() {
     ask 'Less eager updatemandb?' less_eager_updatemandb
   fi
 
-  final_message
+  if [[ $optimized == $TRUE ]]; then
+    final_message
+  fi
 }
 
 main

@@ -16,12 +16,6 @@ Requirements
 Quick installation of setconf
 -----------------------------
 
-For Arch Linux:
-
-```bash
-pacman -S setconf
-```
-
 For other systems:
 
 * Download and extract the files to a temporary directory and install the executable and man page. (Run the installation commands as root if you prefer not to use sudo):
@@ -31,3 +25,11 @@ curl -o- http://setconf.roboticoverlords.org/setconf-0.6.2.tar.xz | tar JxC /tmp
 sudo install -Dm755 /tmp/setconf-0.6.2/setconf.py /usr/bin/setconf
 sudo install -Dm644 /tmp/setconf-0.6.2/setconf.1.gz /usr/share/man/man1/setconf.1.gz
 ```
+
+Arch Linux installation
+------------------------
+
+optimize is available as `optimize-git` on AUR. Install with your favorite AUR helper for an easy installation.
+
+setconf is available as an official package.
+

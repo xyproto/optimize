@@ -69,9 +69,8 @@ function upgrade_packages() {
   LC_ALL=C pacman -Syu
 }
 
-function less_eager_updatemandb() {
-  [[ -f /etc/cron.daily/man-db ]] || return
-  setconf /etc/cron.daily/man-db IONICE_CLASS=3
+function disable_accessibility_tools() {
+  setconf -a /etc/environment NO_AT_BRIDGE=1
 }
 
 # First argument is the yes/no question.
@@ -132,8 +131,10 @@ function main() {
     ask 'Rank pacman mirrors? (takes forever)' rank_mirrors
     ask 'Update pacman now?' update_pacman
     ask 'Upgrade packages now?' upgrade_packages
-    ask 'Less eager updatemandb?' less_eager_updatemandb
   fi
+
+  # Should apply for any distro
+  ask 'Disable GTK+ accessibility tools? (may be needed for virtual keyboards)' disable_accessibility_tools
 
   if [[ $optimized == $TRUE ]]; then
     final_message

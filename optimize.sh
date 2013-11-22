@@ -5,7 +5,7 @@ FALSE=1
 optimized=$FALSE
 
 # Set the swappiness to 1 so that the swap disk is only used
-# when out of memory or rarely in the background.
+# when out of memory (or seldom, in the background).
 function set_swappiness() {
   fn=/etc/sysctl.d/99-sysctl.conf
   if [[ ! -f $fn ]] && [[ -f /etc/sysctl.conf ]]; then
@@ -19,7 +19,7 @@ function set_swappiness() {
   sysctl -p "$fn"
 }
 
-# Set the dirty_ratio to a more sensible value
+# Set the dirty_ratio to a more sensible value (to avoid long "hiccups")
 function set_dirty_ratio() {
   fn=/etc/sysctl.d/99-sysctl.conf
   if [[ ! -f $fn ]] && [[ -f /etc/sysctl.conf ]]; then
@@ -35,7 +35,6 @@ function set_dirty_ratio() {
 
 # Optimize the pacman database and rank the mirrors, if pacman is installed
 function optimize_pacman() {
-  echo
   LC_ALL=C pacman-optimize
 }
 
@@ -60,12 +59,10 @@ function rank_mirrors() {
 }
 
 function update_pacman() {
-  echo
   LC_ALL=C pacman -Sy
 }
 
 function upgrade_packages() {
-  echo
   LC_ALL=C pacman -Syu
 }
 
@@ -82,7 +79,8 @@ function ask() {
     read answer
     echo -en '\e[0m'
     case $answer in
-     [yY]* ) eval "$2"
+     [yY]* ) echo
+             eval "$2"
              optimized=$TRUE
              break;;
      [nN]* ) echo -e '\e[90mskip\e[0m'
@@ -105,9 +103,7 @@ function root() {
 
 function version_info() {
   version_string='\e[34mOptimize \e[0m\e[94mv0.1\e[0m'
-  echo
-  echo -e "\e[90m..--==[\e[0m $version_string \e[90m]==--..\e[0m"
-  echo
+  echo -e "\n\e[90m..--==[\e[0m $version_string \e[90m]==--..\e[0m\n"
 }
 
 function final_message() {

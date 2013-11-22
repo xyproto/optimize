@@ -10,7 +10,12 @@ Requirements
 ------------
 
 * **<a href="http://setconf.roboticoverlords.org">setconf</a>**, for the configuration-related tweaks
-* **pacman**, for the pacman-related tweaks
+
+
+Optional requirements
+---------------------
+
+* Arch Linux / **pacman**, for the pacman-related tweaks
 
 
 Quick installation of setconf

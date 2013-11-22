@@ -115,7 +115,7 @@ function main() {
   root
   version_info
 
-  # Depends on systemd
+  # Depends on sysctl.d or sysctl.conf
   if [[ -d /etc/sysctl.d ]] || [[ -f /etc/sysctl.conf ]]; then
     ask 'Set swappiness to 1?' set_swappiness
     ask 'Set dirty_ratio to 3?' set_dirty_ratio

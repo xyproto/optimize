@@ -13,7 +13,7 @@ function set_swappiness() {
   elif [[ ! -f $fn ]]; then
     return
   fi
-  setconf -a "$fn" vm.swappiness=1
+  setconf -a "$fn" vm.swappiness=10
   setconf -a "$fn" vm.vfs_cache_pressure=50
   # Activate the changes
   sysctl -p "$fn"

@@ -115,7 +115,7 @@ function root() {
 }
 
 function version_info() {
-  version_string='\e[34mOptimize \e[0m\e[94mv0.1\e[0m'
+  version_string='\e[34mOptimize \e[0m\e[94mv0.2\e[0m'
   echo -e "\n\e[90m..--==[\e[0m $version_string \e[90m]==--..\e[0m\n"
 }
 

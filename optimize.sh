@@ -4,7 +4,7 @@ TRUE=0
 FALSE=1
 optimized=$FALSE
 
-# Set the swappiness to 1 so that the swap disk is only used
+# Set the swappiness to 10 so that the swap disk is only used
 # when out of memory (or seldom, in the background).
 function set_swappiness() {
   fn=/etc/sysctl.d/99-sysctl.conf
@@ -14,10 +14,23 @@ function set_swappiness() {
     return
   fi
   setconf -a "$fn" vm.swappiness=10
+  # Activate the changes
+  sysctl -p "$fn"
+}
+
+# Set the vfs_cache_pressure to 50
+function set_vfs_cache_pressure() {
+  fn=/etc/sysctl.d/99-sysctl.conf
+  if [[ ! -f $fn ]] && [[ -f /etc/sysctl.conf ]]; then
+    fn=/etc/sysctl.conf
+  elif [[ ! -f $fn ]]; then
+    return
+  fi
   setconf -a "$fn" vm.vfs_cache_pressure=50
   # Activate the changes
   sysctl -p "$fn"
 }
+
 
 # Set the dirty_ratio to a more sensible value (to avoid long "hiccups")
 function set_dirty_ratio() {
@@ -117,20 +130,21 @@ function main() {
 
   # Depends on sysctl.d or sysctl.conf
   if [[ -d /etc/sysctl.d ]] || [[ -f /etc/sysctl.conf ]]; then
-    ask 'Set swappiness to 1?' set_swappiness
+    ask 'Set swappiness to 10?' set_swappiness
+    ask 'Set cache pressure to 50?' set_vfs_cache_pressure
     ask 'Set dirty_ratio to 3?' set_dirty_ratio
-  fi
-
-  # Depends on pacman / Arch Linux
-  if [[ -f /etc/pacman.conf ]]; then
-    ask 'Optimize the pacman db?' optimize_pacman
-    ask 'Rank pacman mirrors? (takes forever)' rank_mirrors
-    ask 'Update pacman now?' update_pacman
-    ask 'Upgrade packages now?' upgrade_packages
   fi
 
   # Should apply for any distro
   ask 'Disable GTK+ accessibility tools? (may be needed for virtual keyboards)' disable_accessibility_tools
+
+  # Depends on pacman / Arch Linux
+  if [[ -f /etc/pacman.conf ]]; then
+    ask 'Optimize the pacman db?' optimize_pacman
+    ask 'Rank pacman mirrors? (may take several minutes)' rank_mirrors
+    ask 'Update pacman now?' update_pacman
+    ask 'Upgrade packages now?' upgrade_packages
+  fi
 
   if [[ $optimized == $TRUE ]]; then
     final_message

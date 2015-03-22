@@ -19,9 +19,9 @@ Quick manual installation of setconf
 Download and extract the files to a temporary directory and install the executable and man page. (Run the installation commands as root if you prefer not to use sudo):
 
 ```bash
-curl -o- http://setconf.roboticoverlords.org/setconf-0.6.2.tar.xz | tar JxC /tmp
-sudo install -Dm755 /tmp/setconf-0.6.2/setconf.py /usr/bin/setconf
-sudo install -Dm644 /tmp/setconf-0.6.2/setconf.1.gz /usr/share/man/man1/setconf.1.gz
+curl -o- http://setconf.roboticoverlords.org/setconf-0.6.6.tar.xz | tar JxC /tmp
+sudo install -Dm755 /tmp/setconf-0.6.6/setconf.py /usr/bin/setconf
+sudo install -Dm644 /tmp/setconf-0.6.6/setconf.1.gz /usr/share/man/man1/setconf.1.gz
 ```
 
 setconf comes with a self-test, if you want to check that it is working properly:
